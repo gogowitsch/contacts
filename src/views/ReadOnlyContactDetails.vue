@@ -4,22 +4,10 @@
 -->
 
 <template>
-	<!-- nothing selected or contact not found -->
-	<NcEmptyContent v-if="!contact"
-		class="empty-content"
-		:name="t('mail', 'No data for this contact')"
-		:description="t('mail', 'No user selected or the user has no data on their profile')">
-		<template #icon>
-			<IconContact :size="20" />
-		</template>
-	</NcEmptyContent>
-	<div v-else
-		class="recipient-details-content">
+	<div v-if="contact" class="recipient-details-content">
 		<div class="contact-title">
-			<h6>
-				{{ contact.fullName }}
-			</h6>
-			<!-- Subtitle here -->
+			<h6>{{ contact.fullName }}</h6>
+			<!-- Subtitle -->
 			<span v-html="formattedSubtitle" />
 		</div>
 		<div class="contact-details-wrapper">
@@ -38,6 +26,15 @@
 			</div>
 		</div>
 	</div>
+	<!-- nothing selected or contact not found -->
+	<NcEmptyContent v-else
+		class="empty-content"
+		:name="t('mail', 'No data for this contact')"
+		:description="t('mail', 'No data for this contact on their profile')">
+		<template #icon>
+			<IconContact :size="20" />
+		</template>
+	</NcEmptyContent>
 </template>
 
 <script>
@@ -71,13 +68,6 @@ export default {
 			types: String,
 			required: true,
 		},
-		/*
-		reloadBus: {
-			type: Object,
-			required: true,
-		},
-		*/
-		// TODO: is desc used?
 		desc: {
 			type: String,
 			required: false,
@@ -124,10 +114,6 @@ export default {
 		addressbooks() {
 			return this.$store.getters.getAddressbooks
 		},
-		/* 		// store getter
-		contact() {
-			return this.$store.getters.getContact(this.contactKey)
-		}, */
 		/**
 		 * Contact properties copied and sorted by rfcProps.fieldOrder
 		 *
@@ -173,36 +159,6 @@ export default {
 		addressbookIsReadOnly() {
 			return this.contact.addressbook?.readOnly
 		},
-		/* /!**
-		 * Fake model to use the propertySelect component
-		 *
-		 * @return {object}
-		 *!/
-		addressbookModel() {
-			return {
-				readableName: t('mail', 'Address book'),
-				icon: 'icon-address-book',
-				options: this.addressbooksOptions,
-			}
-		},
-		/!**
-		 * Store getters filtered and mapped to usable object
-		 * This is the list of addressbooks that are available
-		 *
-		 * @return {{id: string, name: string, readOnly: boolean}[]}
-		 *!/
-		addressbooksOptions() {
-			return this.addressbooks
-				.filter(addressbook => addressbook.enabled)
-				.map(addressbook => {
-					return {
-						id: addressbook.id,
-						name: addressbook.displayName,
-						readOnly: addressbook.readOnly,
-					}
-				})
-		},
- */
 		/**
 		 * Usable addressbook object linked to the local contact
 		 *
@@ -246,7 +202,6 @@ export default {
 		async fetchContact() {
 			const email = this.contactEmailAddress
 
-			console.log('abooks', this.addressbooks)
 			const result = await Promise.all(
 				this.addressbooks.map(async (addressBook) => [
 					addressBook.dav,
@@ -258,7 +213,7 @@ export default {
 							value: email,
 						}],
 					}]),
-				])
+				]),
 			)
 			const contacts = result.flatMap(([addressBook, vcards]) =>
 				vcards.map((vcard) => new Contact(vcard.data, addressBook)),
@@ -424,6 +379,11 @@ section.contact-details {
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
-	margin-top: -10px;
+	margin-top: -36px;
+	font-size: large;
+	margin-left: 216px;
+}
+:deep(.property__value) {
+	font-size: medium !important;
 }
 </style>
