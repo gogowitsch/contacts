@@ -4,7 +4,17 @@
 -->
 
 <template>
-	<div v-if="contact" class="recipient-details-content">
+	<!-- nothing selected or contact not found -->
+	<NcEmptyContent v-if="!contact"
+		class="empty-content"
+		:name="t('mail', 'No data for this contact')"
+		:description="t('mail', 'No data for this contact on their profile')">
+		<template #icon>
+			<IconContact :size="20" />
+		</template>
+	</NcEmptyContent>
+	<div v-else
+		class="recipient-details-content">
 		<div class="contact-title">
 			<h6>{{ contact.fullName }}</h6>
 			<!-- Subtitle -->
@@ -26,15 +36,6 @@
 			</div>
 		</div>
 	</div>
-	<!-- nothing selected or contact not found -->
-	<NcEmptyContent v-else
-		class="empty-content"
-		:name="t('mail', 'No data for this contact')"
-		:description="t('mail', 'No data for this contact on their profile')">
-		<template #icon>
-			<IconContact :size="20" />
-		</template>
-	</NcEmptyContent>
 </template>
 
 <script>
@@ -202,6 +203,7 @@ export default {
 		async fetchContact() {
 			const email = this.contactEmailAddress
 
+			console.log('abooks', this.addressbooks)
 			const result = await Promise.all(
 				this.addressbooks.map(async (addressBook) => [
 					addressBook.dav,
