@@ -203,7 +203,6 @@ export default {
 		async fetchContact() {
 			const email = this.contactEmailAddress
 
-			console.log('abooks', this.addressbooks)
 			const result = await Promise.all(
 				this.addressbooks.map(async (addressBook) => [
 					addressBook.dav,
@@ -270,120 +269,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-// List of all properties
-.contact-details-wrapper {
-	display: inline;
-	align-items: flex-start;
-	padding-bottom: 20px;
-	gap: 15px;
-	float: left;
-}
-@media only screen and (max-width: 600px) {
-	.contact-details-wrapper {
-		display: block;
-	}
-}
-
-section.contact-details {
-	display: flex;
-	flex-direction: column;
-	gap: 10px;
-}
-
-#qrcode-modal {
-	:deep(.modal-container) {
-		display: flex;
-		padding: 10px;
-		background-color: #fff;
-		.qrcode {
-			max-width: 100%;
-		}
-	}
-}
-
-:deep(.v-select.select) {
-	min-width: 0;
-	flex: 1 auto;
-}
-
-:deep(.v-select.select .vs__selected-options), :deep(.vs__search) {
-	min-height: unset;
-	margin: 0 !important;
-}
-
-:deep(.vs__selected) {
-	height: calc(var(--default-clickable-area) - var(--default-grid-baseline)) !important;
-	margin: calc(var(--default-grid-baseline) / 2);
-}
-
-#pick-addressbook-modal {
-	:deep(.modal-container) {
-		display: flex;
-		overflow: visible;
-		flex-wrap: wrap;
-		justify-content: space-evenly;
-		margin-bottom: 20px;
-		padding: 10px;
-		background-color: #fff;
-		.multiselect {
-			flex: 1 1 100%;
-			width: 100%;
-			margin-bottom: 20px;
-		}
-	}
-}
-
-.action-item {
-	background-color: var(--color-primary-element-light);
-	border-radius: var(--border-radius-rounded);
-}
-
-:deep(.button-vue--vue-tertiary:hover),
-:deep(.button-vue--vue-tertiary:active) {
-	background-color: var(--color-primary-element-light-hover) !important;
-}
-
-.related-resources {
-	display:inline-grid;
-	margin-top: 88px;
-	flex-direction: column;
-	margin-bottom: -30px;
-}
-@media only screen and (max-width: 1600px) {
-	.related-resources {
-		float: left;
-		display: inline-grid;
-		margin-left: 80px;
-		flex-direction: column;
-		margin-bottom: 0;
-		margin-top: 40px;
-	}
-}
-
-.last-edit {
-	display: inline-flex;
-}
-// forcing the size only for contacts app to fit the text size of the contacts app
-:deep(.related-resources__header h5) {
-	font-size: medium;
-	opacity: .7;
-	color: var(--color-primary-element);
-}
-
-.address-book {
-	min-width: 260px !important;
-}
 
 .empty-content {
 	height: 100%;
 }
 .contact-title {
-	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	margin-top: -36px;
-	font-size: large;
-	margin-left: 216px;
+	margin-left: 100px;
+	margin-top: 40px;
 }
 :deep(.property__value) {
 	font-size: medium !important;
