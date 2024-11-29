@@ -126,7 +126,11 @@ class ProfilePickerReferenceProvider extends ADiscoverableReferenceProvider {
 				'title' => $userDisplayName,
 				'subline' => $userEmail ?? $userDisplayName,
 				'email' => $userEmail,
-				'bio' => isset($bio) && $bio !== '' ? substr_replace($bio, '...', 80, strlen($bio)) : null,
+				'bio' => isset($bio) && $bio !== ''
+					? (mb_strlen($bio) > 80
+						? (mb_substr($bio, 0, 80) . '...')
+						: $bio)
+					: null,
 				'headline' => $headline->getScope() !== IAccountManager::SCOPE_PRIVATE ? $headline->getValue() : null,
 				'location' => $location->getScope() !== IAccountManager::SCOPE_PRIVATE ? $location->getValue() : null,
 				'location_url' => $location->getScope() !== IAccountManager::SCOPE_PRIVATE ? $this->getOpenStreetLocationUrl($location->getValue()) : null,
