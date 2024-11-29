@@ -98,6 +98,11 @@ class ProfilePickerReferenceProvider extends ADiscoverableReferenceProvider {
 		if ($user === null) {
 			return null;
 		}
+		$account = $this->accountManager->getAccount($user);
+		$profileEnabled = $account->getProperty(IAccountManager::PROPERTY_PROFILE_ENABLED)->getValue() === '1';
+		if (!$profileEnabled) {
+			return null;
+		}
 
 		$reference = new Reference($referenceText);
 
@@ -105,13 +110,13 @@ class ProfilePickerReferenceProvider extends ADiscoverableReferenceProvider {
 		$userEmail = $user->getEMailAddress();
 		$userAvatarUrl = $this->urlGenerator->linkToRouteAbsolute('core.avatar.getAvatar', ['userId' => $userId, 'size' => '64']);
 
-		$bio = $this->accountManager->getAccount($user)->getProperty(IAccountManager::PROPERTY_BIOGRAPHY);
+		$bio = $account->getProperty(IAccountManager::PROPERTY_BIOGRAPHY);
 		$bio = $bio->getScope() !== IAccountManager::SCOPE_PRIVATE ? $bio->getValue() : null;
-		$headline = $this->accountManager->getAccount($user)->getProperty(IAccountManager::PROPERTY_HEADLINE);
-		$location = $this->accountManager->getAccount($user)->getProperty(IAccountManager::PROPERTY_ADDRESS);
-		$website = $this->accountManager->getAccount($user)->getProperty(IAccountManager::PROPERTY_WEBSITE);
-		$organisation = $this->accountManager->getAccount($user)->getProperty(IAccountManager::PROPERTY_ORGANISATION);
-		$role = $this->accountManager->getAccount($user)->getProperty(IAccountManager::PROPERTY_ROLE);
+		$headline = $account->getProperty(IAccountManager::PROPERTY_HEADLINE);
+		$location = $account->getProperty(IAccountManager::PROPERTY_ADDRESS);
+		$website = $account->getProperty(IAccountManager::PROPERTY_WEBSITE);
+		$organisation = $account->getProperty(IAccountManager::PROPERTY_ORGANISATION);
+		$role = $account->getProperty(IAccountManager::PROPERTY_ROLE);
 
 		// for clients who can't render the reference widgets
 		$reference->setTitle($userDisplayName);
