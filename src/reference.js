@@ -12,7 +12,7 @@ registerWidget('users_picker_profile', async (el, { richObjectType, richObject, 
 			accessible,
 		},
 	}).$mount(el)
-})
+}, () => {}, { hasInteractiveView: false })
 
 registerCustomPickerElement('profile_picker', async (el, { providerId, accessible }) => {
 	const { default: Vue } = await import(/* webpackChunkName: "vue-lazy" */'vue')
